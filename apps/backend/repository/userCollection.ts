@@ -73,8 +73,9 @@ export const getUserById = async (userId: string): Promise<User | null> => {
 export const updateUser = async (userId: string, updatedData: Partial<User>): Promise<void> => {
   try {
     const { password, ...rest } = updatedData;
+    const updatedUser = replaceUndefinedWithNull(rest);
     const userRef = firebaseFirestore.collection(USERS_COLLECTION).doc(userId);
-    await userRef.update(rest);
+    await userRef.update(updatedUser);
   } catch (e) {
     throw new Error(`Error updating user: ${(e as Error).message}`)
   }
